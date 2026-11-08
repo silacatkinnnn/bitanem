@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Senden Özür Dilerim 💕💕 </title>
+  <style>
+    :root {
+      --bg1: #2a0a1e;
+      --bg2: #5a1a3d;
+      --ink: #fff0f5;
+      --pink: #ff6fa5;
+      --soft: #ffc2d9;
+      color-scheme: dark
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0
+    }
+
+    html,
+    body {
+      min-height: 100%
+    }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 50% 30%, var(--bg2), var(--bg1));
+      overflow-x: hidden;
+      padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0)
+    }
+
+    .scene {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center
+    }
+
+    .scene.on {
+      display: flex;
+      animation: fade 1s
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 6vw, 2.6rem);
+      margin: 12px 0;
+      font-weight: normal
+    }
+
+    .hint {
+      color: var(--soft);
+      animation: pulse 2s infinite;
+      margin-top: 10px
+    }
+
+    @keyframes pulse {
+      50% {
+        opacity: .4
+      }
+    }
+
+    /* flower */
+    #flower {
+      width: min(300px, 80vw);
+      cursor: pointer;
+      filter: drop-shadow(0 0 25px #ff6fa588)
+    }
+
+    .petal {
+      transform-origin: 100px 100px;
+      transform: rotate(var(--r)) scale(0);
+      animation: bloom 1.4s cubic-bezier(.2, 1.4, .4, 1) forwards;
+      animation-delay: var(--d)
+    }
+
+    @keyframes bloom {
+      to {
+        transform: rotate(var(--r)) scale(1)
+      }
+    }
+
+    .stem {
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      animation: grow 1.4s forwards
+    }
+
+    @keyframes grow {
+      to {
+        stroke-dashoffset: 0
+      }
+    }
+
+    .center {
+      transform-origin: 100px 100px;
+      transform: scale(0);
+      animation: bloom 1s 2.2s forwards;
+      --r: 0deg
+    }
+
+    .leaf {
+      transform-origin: 100px 190px;
+      transform: scale(0);
+      animation: bloom 1s .8s forwards;
+      --r: 0deg
+    }
+
+    /* puzzle */
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      width: min(330px, 88vw);
+      aspect-ratio: 1;
+      margin: 16px 0;
+      padding: 6px;
+      background: #ffffff18;
+      border-radius: 14px
+    }
+
+    .tile {
+      border-radius: 8px;
+      cursor: pointer;
+      background-size: 300% 300%;
+      transition: transform .2s, box-shadow .2s
+    }
+
+    .tile.sel {
+      transform: scale(.92);
+      box-shadow: 0 0 0 3px var(--pink)
+    }
+
+    .tile:active {
+      transform: scale(.95)
+    }
+
+    /* letter */
+    #letter {
+      max-width: 640px;
+      background: #fff0f51a;
+      border: 1px solid #ffc2d955;
+      border-radius: 18px;
+      padding: 26px 22px;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      text-align: left;
+      backdrop-filter: blur(6px);
+      min-height: 200px;
+      white-space: pre-wrap
+    }
+
+    #final {
+      margin-top: 20px;
+      font-size: clamp(1.6rem, 7vw, 3rem);
+      color: var(--pink);
+      opacity: 0;
+      transition: opacity 2s;
+      text-shadow: 0 0 20px #ff6fa5
+    }
+
+    #final.show {
+      opacity: 1;
+      animation: beat 1.2s infinite
+    }
+
+    @keyframes beat {
+      50% {
+        transform: scale(1.08)
+      }
+    }
+
+    #gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      margin-top: 28px;
+      max-width: 900px
+    }
+
+    .ph {
+      width: min(150px, 40vw);
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      border: 6px solid #fff;
+      border-bottom-width: 20px;
+      border-radius: 4px;
+      box-shadow: 0 8px 25px #0008;
+      opacity: 0;
+      transform: translateX(var(--from)) rotate(var(--rot));
+      animation: slide 1.2s cubic-bezier(.2, .9, .3, 1) forwards;
+      animation-delay: var(--d)
+    }
+
+    @keyframes slide {
+      to {
+        opacity: 1;
+        transform: translateX(0) rotate(var(--rot))
+      }
+    }
+
+    .heart {
+      position: fixed;
+      bottom: -30px;
+      pointer-events: none;
+      animation: up linear forwards;
+      z-index: 5
+    }
+
+    @keyframes up {
+      to {
+        transform: translateY(-110vh) rotate(30deg);
+        opacity: 0
+      }
+    }
+
+    #add {
+      position: fixed;
+      right: 10px;
+      bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+      font-size: .75rem;
+      color: var(--soft);
+      opacity: .5;
+      cursor: pointer;
+      z-index: 9
+    }
+
+    #add input {
+      display: none
+    }
+
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 14px;
+      animation: up 3s linear forwards
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="scene on" id="s1">
+    <svg id="flower" viewBox="0 0 200 220" aria-label="Çiçek">
+      <path class="stem" d="M100 105 C95 150 105 180 100 215" stroke="#4fbf7a" stroke-width="6" fill="none"
+        stroke-linecap="round" />
+      <path class="leaf" d="M100 170 C130 150 150 160 155 175 C130 185 112 182 100 170Z" fill="#3aa766" />
+      <path class="leaf" d="M100 185 C70 165 50 175 45 190 C70 200 88 197 100 185Z" fill="#3aa766" />
+      <g id="petals"></g>
+      <circle class="center" cx="100" cy="100" r="16" fill="#ffd36e" />
+    </svg>
+    <h1 id="t1" style="opacity:0;transition:opacity 1.5s">Sana bir şeyim var…</h1>
+    <p class="hint" id="h1" style="opacity:0">çiçeğe dokun 🩵</p>
+  </section>
+
+  <section class="scene" id="s2">
+    <h1>Önce küçük bir bulmaca 🧩</h1>
+    <p style="color:var(--soft)">Parçalara dokunup yerlerini değiştir, resmi tamamla</p>
+    <div id="board"></div>
+    <p id="moves" class="hint" style="animation:none">Hamle: 0</p>
+  </section>
+
+  <section class="scene" id="s3">
+    <h1>Sevgilim… 💕</h1>
+    <div id="letter"></div>
+    <div id="final">Seni çok seviyorum 🩵/div>
+      <div id="gallery"></div>
+  </section>
+
+  <label id="add">📷 fotoğraf ekle<input type="file" accept="image/*" multiple id="file"></label>
+
+  <script>
+
+    const NAME = "BİTANEEMM";
+    const LETTER = `${NAME},
+
+Biliyorum, seni üzdüm. Yaptığım şey için gerçekten çok pişmanım. Sana kırıcı davrandığım, seni dinlemediğim anlar için içtenlikle özür dilerim.
+
+Sen hayatımdaki en güzel şeysin. Seninle gülmek, seninle susmak bile bana huzur veriyor. Seni kaybetme fikri bile içimi acıtıyor.
+
+Hatalarımdan ders aldım. Daha sabırlı, daha anlayışlı, daha çok sevgi dolu biri olmak istiyorum.
+
+Seni Seviyorum Kerem'imm Canım Birtanecik Sevgilim
+💕`;
+
+    const PHOTOS = ["foto1.HEIC", "foto2.HEIC", "foto3.HEIC", "foto4.HEIC", "foto5.HEIC", "foto6.HEIC"];
+    /* ============================ */
+
+    const $ = id => document.getElementById(id);
+    const show = n => { document.querySelectorAll('.scene').forEach(s => s.classList.remove('on')); $('s' + n).classList.add('on'); window.scrollTo(0, 0) };
+
+    /* Çiçek */
+    const colors = ['#ff6fa5', '#ff8fb8'];
+    for (let i = 0; i < 10; i++) {
+      const p = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+      p.setAttribute('cx', 100); p.setAttribute('cy', 62); p.setAttribute('rx', 17); p.setAttribute('ry', 38);
+      p.setAttribute('fill', colors[i % 2]); p.setAttribute('class', 'petal');
+      p.style.setProperty('--r', i * 36 + 'deg'); p.style.setProperty('--d', (1 + i * .12) + 's');
+      $('petals').appendChild(p);
+    }
+    setTimeout(() => { $('t1').style.opacity = 1; $('h1').style.opacity = 1 }, 3000);
+    let armed = false; setTimeout(() => armed = true, 2800);
+    $('flower').onclick = () => { if (armed) { hearts(12); setTimeout(() => { show(2); initPuzzle() }, 500) } };
+
+    /* Hearts */
+    function hearts(n = 20) {
+      for (let i = 0; i < n; i++) {
+        const h = document.createElement('div'); h.className = 'heart';
+        h.textContent = ['💗', '💖', '💕', '💞', '🩵'][Math.floor(Math.random() * 5)];
+        h.style.left = Math.random() * 100 + 'vw'; h.style.fontSize = (16 + Math.random() * 26) + 'px';
+        h.style.animationDuration = (4 + Math.random() * 4) + 's'; h.style.animationDelay = Math.random() * 1.5 + 's';
+        document.body.appendChild(h); setTimeout(() => h.remove(), 9500);
+      }
+    }
+
+    /* Puzzle */
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#ff9ec4'/><stop offset='1' stop-color='#7b2cbf'/></linearGradient></defs><rect width='300' height='300' fill='url(#g)'/><path d='M150 240C60 175 50 120 85 92c28-22 56-6 65 18 9-24 37-40 65-18 35 28 25 83-65 148z' fill='#fff0f5'/><text x='150' y='285' font-family='Georgia' font-size='20' text-anchor='middle' fill='#fff'>Seni seviyorum</text></svg>`;
+    const IMG = 'url("data:image/svg+xml;utf8,' + encodeURIComponent(svg) + '")';
+    let order = [], sel = null, moves = 0, done = false;
+    function initPuzzle() {
+      done = false; moves = 0; sel = null; $('moves').textContent = 'Hamle: 0';
+      order = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+      do { order.sort(() => Math.random() - .5) } while (order.every((v, i) => v === i));
+      render();
+    }
+    function render() {
+      const b = $('board'); b.innerHTML = '';
+      order.forEach((v, i) => {
+        const t = document.createElement('div'); t.className = 'tile' + (sel === i ? ' sel' : '');
+        t.style.backgroundImage = IMG;
+        t.style.backgroundPosition = (v % 3) * 50 + '% ' + Math.floor(v / 3) * 50 + '%';
+        t.onclick = () => pick(i); b.appendChild(t);
+      });
+    }
+    function pick(i) {
+      if (done) return;
+      if (sel === null) { sel = i; render(); return }
+      if (sel !== i) { [order[sel], order[i]] = [order[i], order[sel]]; moves++; $('moves').textContent = 'Hamle: ' + moves }
+      sel = null; render();
+      if (order.every((v, i) => v === i)) { done = true; hearts(25); setTimeout(() => { show(3); startLetter() }, 1500) }
+    }
+
+    /* Mektup */
+    function startLetter() {
+      const el = $('letter'); el.textContent = ''; let i = 0;
+      const iv = setInterval(() => {
+        el.textContent += LETTER[i++];
+        if (i % 40 === 0) hearts(2);
+        if (i >= LETTER.length) { clearInterval(iv); finale() }
+      }, 45);
+    }
+    function finale() {
+      $('final').classList.add('show');
+      hearts(40); setInterval(() => hearts(6), 2500);
+      buildGallery();
+    }
+    function placeholder(i) {
+      const em = ['💞', '🩵', '💓', '💕', '💌', '✨'][i % 6];
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 200'><rect width='150' height='200' fill='#ff9ec4'/><text x='75' y='115' font-size='60' text-anchor='middle'>${em}</text></svg>`);
+    }
+    let userPhotos = [];
+    function buildGallery() {
+      const g = $('gallery'); g.innerHTML = '';
+      const list = userPhotos.length ? userPhotos : (PHOTOS.length ? PHOTOS : [0, 1, 2, 3, 4, 5].map(placeholder));
+      list.forEach((src, i) => {
+        const im = new Image(); im.src = src; im.className = 'ph';
+        im.style.setProperty('--from', i % 2 ? '110vw' : '-110vw');
+        im.style.setProperty('--rot', ((i % 2 ? 1 : -1) * (2 + i % 4 * 2)) + 'deg');
+        im.style.setProperty('--d', (i * .6) + 's');
+        g.appendChild(im);
+      });
+    }
+    $('file').onchange = e => {
+      userPhotos = [...e.target.files].map(f => URL.createObjectURL(f));
+      if ($('final').classList.contains('show')) buildGallery();
+    };
+  </script>
+</body>
+
+</html>
